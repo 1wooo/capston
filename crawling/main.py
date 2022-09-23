@@ -14,7 +14,7 @@ for i in range(1,10):
     elem = driver.find_element(By.XPATH, "//div[@class='rySch_con']/div[@class='section list']"
                                          "/div[@class='part list']/table[@class='car_list']/tbody")
 
-    time.sleep(4)  # 2초 대기
+    time.sleep(2)  # 2초 대기
     tmp = elem.find_elements(By.TAG_NAME, "tr")
 
     for tr in tmp:
@@ -28,12 +28,16 @@ for i in range(len(carInfoURL)):
     driver.implicitly_wait(10)
 
     time.sleep(3)
-    for j in range(1,5):
-        image_URL = driver.find_element(By.XPATH,
-                                        "/html/body/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/img").get_attribute("src").split("_001")
-        realURL = image_URL[0] + "_00" + str(j) + image_URL[1]
-        #마우스 호버링이 안먹어서 직접 문자열 나눠서 해결
+    try:
+        for j in range(1,5):
+            image_URL = driver.find_element(By.ID, "carPic").find_element(By.TAG_NAME, "img").get_attribute("src").split("_001")
+            realURL = image_URL[0] + "_00" + str(j) + image_URL[1]
+            #마우스 호버링이 안먹어서 직접 문자열 나눠서 해결 /html/body/div[1]/div[2]/div/div[1]/div[2]/div[1]/div[1]/img
 
-        print(realURL)
-        urllib.request.urlretrieve(realURL, "./crawlingPic/" + str(i) + "_" + str(j) + ".jpg")
+            # print(realURL)
+            urllib.request.urlretrieve(realURL, "./crawlingPic3/" + str(i) + "_" + str(j) + ".jpg")
+    except:
+        print("예외 발생")
+        i -= 1
+
 #상세 페이지에 대한 사진 저장작업 종료
