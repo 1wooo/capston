@@ -51,7 +51,7 @@ public class loginController {
         if(loginMember.isEmpty()){
             bindingResult.reject("loginFail","아이디 또는 비밀번호가 맞지 않습니다.");
             System.out.println("Second Error");
-            return "/loginPage/HomeLogin";
+            return "loginPage/HomeLogin";
         }
 
         else {
@@ -67,18 +67,18 @@ public class loginController {
 
             List<Long> monthData = tableServiceInterface.getMonthData();
             model.addAttribute("monthData",monthData);
-            return "/mainPage/index";
+            return "mainPage/index";
         }
     }
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String getLoginPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                                Member member, HttpServletRequest request, Model model) {
 
-        if (member == null) { return "/loginPage/HomeLogin";}
+        if (member == null) { return "loginPage/HomeLogin";}
         else{
             List<Long> monthData = tableServiceInterface.getMonthData();
             model.addAttribute("monthData",monthData);
-            return "/mainPage/index";
+            return "mainPage/index";
         }
     }
 
@@ -87,12 +87,12 @@ public class loginController {
         // 로그인 검증
         HttpSession session = request.getSession(false);
         if (session == null) {
-            return "/loginPage/HomeLogin";
+            return "loginPage/HomeLogin";
         }
         else{
             List<carNumber> cars = tableServiceInterface.getAll();
             model.addAttribute("illegalCars", cars);
-            return "/mainPage/tables";
+            return "mainPage/tables";
         }
         // 로그인 검증
 
@@ -104,9 +104,9 @@ public class loginController {
         //로그인 검증
         HttpSession session = request.getSession(false);
         if (session == null) {
-            return "/loginPage/HomeLogin";
+            return "loginPage/HomeLogin";
         }else{
-            return "/mainPage/liveCam";
+            return "mainPage/liveCam";
         }
         // 로그인 검증
         // 클라이언트에서 영상 넘겨받고 웹에 실시간으로 뿌려주는 코드 작성 필요
