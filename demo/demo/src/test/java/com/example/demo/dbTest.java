@@ -1,10 +1,12 @@
 package com.example.demo;
+import com.example.demo.DTO.Member;
 import com.example.demo.repo.CarNumberRepoInterface;
 import com.example.demo.repo.SpringDataJpaMemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -28,30 +30,12 @@ public class dbTest {
     @Autowired
     EntityManager em;
 
-
-
     @Test
-    @Transactional
+    @Commit
     public void test() {
-        class month{
-            Long cnt;
-        }
-        LocalDate now = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
-        String formatedNow = now.format(formatter);
+        Member newMember = new Member();
 
-        List<Long> MonthStatistics = new ArrayList<>();
-        for (int i=1; i<=12; i++){
-            String stDate = '\'' + formatedNow + '-' + i + '-' + "01" + '\'';
-
-            Optional<Long> any = em.createQuery(
-                            "SELECT count(c.id) FROM carNumber c WHERE MONTH("+stDate+") = MONTH(c.timestamp)"
-                            , Long.class)
-                    .getResultList()
-                    .stream().findAny();
-            MonthStatistics.add(any.get());
-        }
-        System.out.println(MonthStatistics);
+        springDataJpaMemberRepository.save(newMember);
     }
 
 }
