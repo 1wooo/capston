@@ -1,6 +1,6 @@
 package com.example.demo.repo;
 
-import com.example.demo.member.Member;
+import com.example.demo.DTO.Member;
 
 import javax.persistence.EntityManager;
 import java.util.Optional;
@@ -15,7 +15,6 @@ public class MemberRepoImpl implements MemberRepo {
 
     @Override
     public Optional<Member> findByMemberId(String memberid) {
-
         Optional<Member> findMember = em.createQuery(
                         "FROM Member m WHERE m.memberId LIKE :memberid",Member.class)
                 .setParameter("memberid", memberid)

@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.member.Member;
+import com.example.demo.DTO.Member;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

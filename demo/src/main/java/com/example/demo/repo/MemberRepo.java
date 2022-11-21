@@ -1,6 +1,6 @@
 package com.example.demo.repo;
 
-import com.example.demo.member.Member;
+import com.example.demo.DTO.Member;
 
 import java.util.Optional;
 

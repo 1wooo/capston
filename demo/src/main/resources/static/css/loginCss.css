@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Noto Sans KR", sans-serif;
+
 }
 
 .loginForm {
@@ -29,7 +30,7 @@ a {
 .login {
   width: 100%;
   height: 100%;
-  background: white;
+  background: #f5feff;
   display: flex;
   justify-content: center;
   align-items: center;
