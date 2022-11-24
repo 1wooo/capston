@@ -34,7 +34,7 @@ public class MonthChartRepoInterfaceImpl implements MonthChartRepoInterface {
                             , Long.class)
                     .getResultList()
                     .stream().findAny();
-            MonthStatistics.add(any.get());
+            MonthStatistics.add(any.get()); //월별 데이터 입력 (대시보드 차트 구현용)
         }
 
         return MonthStatistics;

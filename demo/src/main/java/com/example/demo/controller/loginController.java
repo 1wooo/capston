@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.DTO.Member;
+import com.example.demo.DTO.NotificationCarNumberDTO;
 import com.example.demo.DTO.carNumber;
 import com.example.demo.service.MemberServiceInterface;
+import com.example.demo.service.Notification_Thread;
 import com.example.demo.service.SessionConst;
 import com.example.demo.service.TableServiceInterface;
 import lombok.AllArgsConstructor;
@@ -127,11 +129,32 @@ public class loginController {
         java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
         // 날짜처리코드드
 
-       car.setTimestamp(timestamp);
+        car.setTimestamp(timestamp);
 
 //        System.out.println(map);
         tableServiceInterface.illegalCarRegister(car);
     }
 
+    @PostMapping("notification/notificationRegister")
+    public void NotificationCarRegister(@RequestBody HashMap<String, Object> map) throws ParseException {
+        NotificationCarNumberDTO notificationCarNumberDTO = new NotificationCarNumberDTO();
+        notificationCarNumberDTO.setCarN((String) map.get("carNumber"));
+        //시간 계산용 스레드
+        Notification_Thread notification_thread = new Notification_Thread(tableServiceInterface);
+        notification_thread.start();
+        //시간 계산용 스레드
 
+        // 날짜처리코드
+        String timeStr = (String) map.get("EnterDate");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date date = formatter.parse(timeStr);
+        java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
+        // 날짜처리코드드
+        notificationCarNumberDTO.setTimestamp(timestamp);
+
+        if (!tableServiceInterface.isExist((String) map.get("carNumber"))) {
+            // 알림 서비스 등록 안된 차량이면 일단 db에 전화번호 없이 등록
+            tableServiceInterface.NotificationCarRegister(notificationCarNumberDTO);
+        }
+    }
 }
