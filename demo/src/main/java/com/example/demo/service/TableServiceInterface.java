@@ -10,9 +10,15 @@ public interface TableServiceInterface {
     List<carNumber> getAll();
     public void illegalCarRegister(carNumber carnumber);
 
+    public void illegalCarRemove(Long id);
+
     public void NotificationCarRegister(NotificationCarNumberDTO notificationCarNumberDTO);
 
-    Boolean isExist(String carNumber);
+    Optional<NotificationCarNumberDTO> isExist(String carNumber);
+
+    String isExistPhoneNumber(String carNumber);
 
     List<Long> getMonthData();
+    public void updatePhoneNumber(String carNumber, String phoneNumber);
+    public void updateEnteringTime(String carNumber, java.sql.Timestamp timestamp);
 }

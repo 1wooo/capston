@@ -32,6 +32,17 @@ public class carNumber {
     @Column(name = "fine")
     private int fine;
 
+    public String getDeleteCode() {
+        return deleteCode;
+    }
+
+    public void setDeleteCode(String deleteCode) {
+        this.deleteCode = deleteCode;
+    }
+
+    @Column(name = "deleteCode")
+    private String deleteCode;
+
     public Timestamp getTimestamp() {
         return timestamp;
     }

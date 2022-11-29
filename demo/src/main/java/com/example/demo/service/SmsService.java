@@ -50,7 +50,7 @@ public class SmsService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("x-ncp-apigw-timestamp", time.toString());
-        headers.set("x-ncp-iam-access-key", accessKey);
+        headers.set("x-ncp-iam-access-key", this.accessKey);
         headers.set("x-ncp-apigw-signature-v2", makeSignature(time));
 
         List<MessageDTO> messages = new ArrayList<>();
@@ -60,7 +60,7 @@ public class SmsService {
                 .type("SMS")
                 .contentType("COMM")
                 .countryCode("82")
-                .from(phone)
+                .from(this.phone)
                 .content(messageDto.getContent())
                 .messages(messages)
                 .build();
@@ -71,6 +71,8 @@ public class SmsService {
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+        System.out.println(httpBody);
+
         SmsResponseDTO response = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/"+ serviceId +"/messages"), httpBody, SmsResponseDTO.class);
 
         return response;
@@ -79,7 +81,7 @@ public class SmsService {
         String space = " ";
         String newLine = "\n";
         String method = "POST";
-        String url = "/sms/v2/services/"+ this.serviceId+"/messages";
+        String url = "/sms/v2/services/"+ this.serviceId +"/messages";
         String timestamp = time.toString();
         String accessKey = this.accessKey;
         String secretKey = this.secretKey;

@@ -11,7 +11,7 @@
         <link href="/css/styles.css" rel="stylesheet" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="/js/tableScript.js"></script>
+<!--        <script type="text/javascript" src="/js/tableScript.js"></script>-->
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -81,9 +81,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="p : ${illegalCars}">
+                                        <tr th:each="p : ${illegalCars}" th:if="${p.deleteCode} != 'Y'">
                                             <td scope="row" width="10%">
-                                                <input type="checkbox" name="reportChkRow" id="${p.id}">
+                                                <input type="checkbox" name="reportChkRow" th:id="${p.id}">
                                             </td>
                                             <td scope="row" width="10%">
                                                 <div th:text="${p.id}"></div>
@@ -105,7 +105,7 @@
                                 </table>
                             </div>
                         </div>
-                        <a href="" class="button btnFade btnLightBlue">삭제</a>
+                        <a href='javascript:illegalCarDelete();' class="button btnFade btnLightBlue">삭제</a>
                     </div>
                 </main>
             </div>
@@ -114,5 +114,51 @@
         <script src="js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
+        <script>
+            function selectAll(selectAll)  {
+                 const checkboxes = document.querySelectorAll("input[name='reportChkRow']");
+                 checkboxes.forEach((checkbox) => {
+                    checkbox.checked = selectAll.checked
+                 })
+            }
+            function illegalCarDelete(){
+                //체크박스 체크된 항목
+                const query = 'input[name="reportChkRow"]:checked'
+                const selectedElements = document.querySelectorAll(query)
+
+                //체크박스 체크된 항목의 개수
+                const selectedElementsCnt = selectedElements.length;
+
+                if(selectedElementsCnt == 0){
+                    alert("삭제할 항목을 선택해주세요.");
+                    return false;
+                }
+
+                else{
+                    if (confirm("정말로 삭제하시겠습니까?")) {
+                        //배열생성
+                        const arr = new Array(selectedElementsCnt);
+
+                        document.querySelectorAll('input[name="reportChkRow"]:checked').forEach(function(v, i) {
+                            arr[i] = v.id;
+                        });
+
+                        const form = document.createElement('form');
+                        form.setAttribute('method', 'post');        //Post 메소드 적용
+                        form.setAttribute('action', 'tables/carRemove');
+
+                        var input1 = document.createElement('input');
+                        input1.setAttribute("type", "hidden");
+                        input1.setAttribute("name", "illegalCarNumberTableID");
+                        input1.setAttribute("value", arr);
+                        form.appendChild(input1);
+                        console.log(form);
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+                }
+            }
+
+        </script>
     </body>
 </html>
