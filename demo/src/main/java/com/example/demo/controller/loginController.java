@@ -2,20 +2,18 @@ package com.example.demo.controller;
 
 import com.example.demo.DTO.Member;
 import com.example.demo.DTO.NotificationCarNumberDTO;
-import com.example.demo.DTO.carNumber;
+import com.example.demo.DTO.illegarCarNumberDTO;
 import com.example.demo.s3.S3Service;
 import com.example.demo.service.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
@@ -98,7 +96,7 @@ public class loginController {
         if (session == null) {
             return "loginPage/HomeLogin";
         } else {
-            List<carNumber> cars = tableServiceInterface.getAll();
+            List<illegarCarNumberDTO> cars = tableServiceInterface.getAll();
             model.addAttribute("illegalCars", cars);
             return "mainPage/tables";
         }
@@ -142,7 +140,7 @@ public class loginController {
     @PostMapping("loginPage/testApi")
     public void ApiTest(@RequestBody HashMap<String, Object> map) throws ParseException {
 
-        carNumber car = new carNumber();
+        illegarCarNumberDTO car = new illegarCarNumberDTO();
         car.setCarN((String) map.get("carNumber"));
         car.setIllegalCode((int) map.get("illegalCode"));
         car.setFine((int) map.get("fine"));

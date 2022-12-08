@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.DTO.MessageDTO;
+import com.example.demo.DTO.illegarCarNumberDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.UnsupportedEncodingException;
@@ -30,6 +31,12 @@ public class Notification_Thread extends Thread {
             sec += 1;
             if (tableServiceInterface.isOverTIme(carNumber)){
                 String phone = tableServiceInterface.isExistPhoneNumber(carNumber);
+                illegarCarNumberDTO illegarCarNumberDTO = new illegarCarNumberDTO();
+                illegarCarNumberDTO.setCarN(carNumber);
+                illegarCarNumberDTO.setFine(100000);
+                illegarCarNumberDTO.setTimestamp(tableServiceInterface.getEnteringCarTimestamp(carNumber));
+                tableServiceInterface.illegalCarRegister(illegarCarNumberDTO);
+
                 if (phone != null){
                     sendMsg.setContent("법적 충전 허용시간이 초과하였습니다. 즉시 출차바랍니다.");
                     sendMsg.setTo(phone);

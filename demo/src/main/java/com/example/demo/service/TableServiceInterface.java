@@ -1,15 +1,16 @@
 package com.example.demo.service;
 
 import com.example.demo.DTO.NotificationCarNumberDTO;
-import com.example.demo.DTO.carNumber;
+import com.example.demo.DTO.illegarCarNumberDTO;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
 public interface TableServiceInterface {
-    List<carNumber> getAll();
-    public void illegalCarRegister(carNumber carnumber);
+    List<illegarCarNumberDTO> getAll();
+    public void illegalCarRegister(illegarCarNumberDTO carnumber);
 
     public void illegalCarRemove(Long id);
 
@@ -28,6 +29,8 @@ public interface TableServiceInterface {
 
     @Transactional
     void updateCurrentCarExitTime(String carNumber, java.sql.Timestamp timestamp);
+
+    Timestamp getEnteringCarTimestamp(String carNumber);
 
     Boolean isOverTIme(String carNumber);
 }
