@@ -3,10 +3,12 @@ package com.example.demo.controller;
 import com.example.demo.DTO.Member;
 import com.example.demo.DTO.NotificationCarNumberDTO;
 import com.example.demo.DTO.carNumber;
+import com.example.demo.s3.S3Service;
 import com.example.demo.service.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,6 +35,10 @@ public class loginController {
     private TableServiceInterface tableServiceInterface;
     @Autowired
     private SmsService smsService;
+
+    @Autowired
+    private S3Service s3Service;
+
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String login(@ModelAttribute LoginForm form, BindingResult bindingResult,
@@ -66,6 +73,7 @@ public class loginController {
 
             List<Long> monthData = tableServiceInterface.getMonthData();
             model.addAttribute("monthData", monthData);
+
             return "mainPage/index";
         }
     }
@@ -97,8 +105,23 @@ public class loginController {
         // 로그인 검증
     }
 
+    @GetMapping("mainPage/Carlog")
+    public String getCarlogPage(HttpServletRequest request, Model model) {
+
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return "loginPage/HomeLogin";
+        } else {
+            List<String> keys = s3Service.getS3Keys();
+            List<String> urls = s3Service.objectsURL(keys);
+            model.addAttribute("urls", urls);
+            return "mainPage/Carlog";
+        }
+    }
+
     @GetMapping("mainPage/liveCam")
-    public String getLiveCamPage(HttpServletRequest request) {
+    public String getLiveCamPage(HttpServletRequest request, Model model) {
+
         //로그인 검증
         HttpSession session = request.getSession(false);
         if (session == null) {
@@ -109,6 +132,11 @@ public class loginController {
         // 로그인 검증
         // 클라이언트에서 영상 넘겨받고 웹에 실시간으로 뿌려주는 코드 작성 필요
     }
+
+//    @PostMapping("liveCamIndex/receive")
+//    public void indexReceive(@RequestBody HashMap<String, Object> map) {
+//        s3Service.setFileIndex(Integer.parseInt((String) map.get("camIndex")));
+//    }
 
     // Rest API로 파이썬에서 받아오는 정보들 DB등록
     @PostMapping("loginPage/testApi")
@@ -214,4 +242,13 @@ public class loginController {
 
         return "notification/current";
     }
+
+    @GetMapping("/webcamTest")
+    public String download() throws IOException {
+
+        return "mainPage/webcamTest";
+    }
+
+
 }
+

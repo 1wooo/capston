@@ -3,6 +3,7 @@ package com.example.demo;
 import com.example.demo.DTO.MessageDTO;
 import com.example.demo.DTO.NotificationCarNumberDTO;
 import com.example.demo.repo.NotificationCarNumberRepoInterface;
+import com.example.demo.s3.S3Service;
 import com.example.demo.service.Notification_Thread;
 import com.example.demo.service.SmsService;
 import com.example.demo.service.TableServiceInterface;
@@ -12,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -25,6 +28,16 @@ public class test {
     SmsService smsService;
     @Autowired
     TableServiceInterface tableServiceInterface;
+    @Autowired
+    S3Service s3Service;
+
+    @Test
+    public void test() {
+        List<String> s3Keys = s3Service.getS3Keys();
+        List<String> url = s3Service.objectsURL(s3Keys);
+
+        System.out.println(url);
+    }
 
 //    @Test
 //    @Commit

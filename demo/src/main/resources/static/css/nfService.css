@@ -3,7 +3,6 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Noto Sans KR", sans-serif;
-
 }
 
 .loginForm {
@@ -24,17 +23,21 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: white;
-}
+  }
 
 .login {
   width: 100%;
   height: 100%;
-  background: #f5feff;
+  background-color: #4696e5;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  color: #d1e5f9;
+  background-image: url("images/overlay.png"), url("images/pattern-size1.svg");
+  background-position: top left, center center;
+  background-attachment: fixed, fixed;
+  background-size: auto, cover;
 }
 
 h2 {
@@ -81,7 +84,7 @@ h2 {
   height: 50px;
   border: 0;
   outline: none;
-  background: linear-gradient(to left, rgb(10, 8, 7), rgb(8, 5, 2));
+  background: #414141;
   color: white;
   font-size: 1.2em;
   letter-spacing: 2px;

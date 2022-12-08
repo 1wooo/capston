@@ -32,8 +32,7 @@ Icon
 .Spotlight-V100
 .Trashes
 
-### Java ###
-*.class
+
 
 # Package Files #
 *.jar
@@ -79,6 +78,7 @@ local.properties
 *.ipr
 *.iws
 .idea/
+application.properties
 
 ### SVN ###
 .svn/
