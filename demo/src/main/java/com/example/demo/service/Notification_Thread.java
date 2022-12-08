@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.DTO.MessageDTO;
-import com.example.demo.DTO.illegarCarNumberDTO;
+import com.example.demo.DTO.carNumber;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.UnsupportedEncodingException;
@@ -31,7 +31,7 @@ public class Notification_Thread extends Thread {
             sec += 1;
             if (tableServiceInterface.isOverTIme(carNumber)){
                 String phone = tableServiceInterface.isExistPhoneNumber(carNumber);
-                illegarCarNumberDTO illegarCarNumberDTO = new illegarCarNumberDTO();
+                com.example.demo.DTO.carNumber illegarCarNumberDTO = new carNumber();
                 illegarCarNumberDTO.setCarN(carNumber);
                 illegarCarNumberDTO.setFine(100000);
                 illegarCarNumberDTO.setTimestamp(tableServiceInterface.getEnteringCarTimestamp(carNumber));

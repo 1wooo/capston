@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.DTO.NotificationCarNumberDTO;
-import com.example.demo.DTO.illegarCarNumberDTO;
+import com.example.demo.DTO.carNumber;
 import com.example.demo.repo.CarNumberRepoInterface;
 import com.example.demo.repo.NotificationCarNumberRepoInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class TableServiceImpl implements TableServiceInterface {
     private NotificationCarNumberRepoInterface notificationCarNumberRepoInterface;
 
     @Override
-    public List<illegarCarNumberDTO> getAll() {
+    public List<carNumber> getAll() {
         return carNumberRepoInterface.findAll();
     }
     @Override
@@ -33,15 +33,15 @@ public class TableServiceImpl implements TableServiceInterface {
         return MonthData;
     } // 대시보드 차트 DB연결할 때 쓰는 클래스
     @Override
-    public void illegalCarRegister(illegarCarNumberDTO carnumber) {
+    public void illegalCarRegister(carNumber carnumber) {
         carNumberRepoInterface.save(carnumber);
     }
     // 테이블 DB와 연결 시 사용함
     @Override
     @Transactional
     public void illegalCarRemove(Long id) {
-        Optional<illegarCarNumberDTO> tmp = carNumberRepoInterface.findById(id);
-        illegarCarNumberDTO requestedCar = tmp.get();
+        Optional<carNumber> tmp = carNumberRepoInterface.findById(id);
+        carNumber requestedCar = tmp.get();
 
         requestedCar.setDeleteCode("Y");
     } // 테이블 페이지에 삭제버튼과 연결 (불법주정차 차량관련)

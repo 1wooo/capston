@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.DTO.NotificationCarNumberDTO;
-import com.example.demo.DTO.illegarCarNumberDTO;
+import com.example.demo.DTO.carNumber;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TableServiceInterface {
-    List<illegarCarNumberDTO> getAll();
-    public void illegalCarRegister(illegarCarNumberDTO carnumber);
+    List<carNumber> getAll();
+    public void illegalCarRegister(carNumber carnumber);
 
     public void illegalCarRemove(Long id);
 

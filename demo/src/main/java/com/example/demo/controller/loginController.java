@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.DTO.Member;
 import com.example.demo.DTO.NotificationCarNumberDTO;
-import com.example.demo.DTO.illegarCarNumberDTO;
+import com.example.demo.DTO.carNumber;
 import com.example.demo.s3.S3Service;
 import com.example.demo.service.*;
 import lombok.AllArgsConstructor;
@@ -96,7 +96,7 @@ public class loginController {
         if (session == null) {
             return "loginPage/HomeLogin";
         } else {
-            List<illegarCarNumberDTO> cars = tableServiceInterface.getAll();
+            List<carNumber> cars = tableServiceInterface.getAll();
             model.addAttribute("illegalCars", cars);
             return "mainPage/tables";
         }
@@ -140,7 +140,7 @@ public class loginController {
     @PostMapping("loginPage/testApi")
     public void ApiTest(@RequestBody HashMap<String, Object> map) throws ParseException {
 
-        illegarCarNumberDTO car = new illegarCarNumberDTO();
+        carNumber car = new carNumber();
         car.setCarN((String) map.get("carNumber"));
         car.setIllegalCode((int) map.get("illegalCode"));
         car.setFine((int) map.get("fine"));
