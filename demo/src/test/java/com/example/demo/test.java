@@ -18,27 +18,48 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
-@SpringBootTest
+//@SpringBootTest
 public class test {
+//
+//    @Autowired
+//    SmsService smsService;
+//    @Autowired
+//    TableServiceInterface tableServiceInterface;
+//    @Autowired
+//    S3Service s3Service;
 
-    @Autowired
-    SmsService smsService;
-    @Autowired
-    TableServiceInterface tableServiceInterface;
-    @Autowired
-    S3Service s3Service;
+//    @Test
+//    public void test() {
+//        List<String> s3Keys = s3Service.getS3Keys();
+//        List<String> url = s3Service.objectsURL(s3Keys);
+//
+//        System.out.println(url);
+//    }
 
     @Test
-    public void test() {
-        List<String> s3Keys = s3Service.getS3Keys();
-        List<String> url = s3Service.objectsURL(s3Keys);
+    public void te() {
 
-        System.out.println(url);
+        Timestamp enterTime = Timestamp.valueOf("2022-11-30 19:01:01");
+        Timestamp exitTime = Timestamp.valueOf("2022-11-30 20:01:55");
+
+        Calendar enTime = Calendar.getInstance();
+        Calendar exTime = Calendar.getInstance();
+
+        enTime.setTime(enterTime);
+        exTime.setTime(exitTime);
+
+        int diffHour = exTime.get(Calendar.HOUR) - enTime.get(Calendar.HOUR);
+        int diffMin = exTime.get(Calendar.MINUTE) - enTime.get(Calendar.MINUTE);
+
+        System.out.println(diffMin);
+        System.out.println(diffHour);
     }
-
 //    @Test
 //    @Commit
 //    public void updatePhoneNumberTest() {

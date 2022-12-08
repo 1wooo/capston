@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,7 +50,6 @@ public class TableServiceImpl implements TableServiceInterface {
     public void NotificationCarRegister(NotificationCarNumberDTO notificationCarNumberDTO) {
         notificationCarNumberRepoInterface.save(notificationCarNumberDTO);
     } // 입차시 알림서비스 DB에 일단 등록
-
     @Override
     public Optional<NotificationCarNumberDTO> isExist(String carNumber) {
         Optional<NotificationCarNumberDTO> findCar = notificationCarNumberRepoInterface.findBycarN(carNumber);
@@ -86,5 +86,45 @@ public class TableServiceImpl implements TableServiceInterface {
         carForupdate.setTimestamp(timestamp);
     }
 
+    @Override
+    @Transactional
+    public void resetNewCarExitTime(String carNumber) {
+        Optional<NotificationCarNumberDTO> tmp = notificationCarNumberRepoInterface.findBycarN(carNumber);
+        NotificationCarNumberDTO carForUpdate = tmp.get();
+        carForUpdate.setExitTime(null);
+        // 등록차량이 다시 들어왔을때 출차시간 리셋
+    }
+
+    @Override
+    @Transactional
+    public void updateCurrentCarExitTime(String carNumber, Timestamp timestamp) {
+        Optional<NotificationCarNumberDTO> tmp = notificationCarNumberRepoInterface.findBycarN(carNumber);
+        NotificationCarNumberDTO carForUpdate = tmp.get();
+        carForUpdate.setExitTime(timestamp);
+    }
+
+    @Override
+    public Boolean isOverTIme(String carNumber) {
+        Optional<NotificationCarNumberDTO> tmp = notificationCarNumberRepoInterface.findBycarN(carNumber);
+        NotificationCarNumberDTO carForUpdate = tmp.get();
+
+        Timestamp enterTime = carForUpdate.getTimestamp();
+        Timestamp exitTime = carForUpdate.getExitTime();
+
+        Calendar enTime = Calendar.getInstance();
+        Calendar exTime = Calendar.getInstance();
+
+        enTime.setTime(enterTime);
+        exTime.setTime(exitTime);
+
+        int diffMIN = exTime.get(Calendar.MINUTE) - enTime.get(Calendar.MINUTE);
+
+        if (diffMIN >= 1) {
+            return true;
+        }
+        else return false;
+
+
+    }
 
 }

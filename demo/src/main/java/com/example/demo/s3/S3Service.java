@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,26 +23,25 @@ public class S3Service {
 
     public List<String> getS3Keys() {
         ListObjectsV2Result result = amazonS3.listObjectsV2(bucket_name);
-        System.out.println(result);
-        System.out.println(result.getClass());
+//        System.out.println(result);
+//        System.out.println(result.getClass());
         List<S3ObjectSummary> objects = result.getObjectSummaries();
-        System.out.println(objects);
-        List<String> keys = null;
+//        System.out.println(objects);
+        List<String> keys = new ArrayList<String>();
         for (S3ObjectSummary os : objects) {
             System.out.println("* " + os.getKey());
+            keys.add(os.getKey());
         }
         return keys;
     }
 
     public List<String> objectsURL(List<String> keys) {
-        List<String> urls = null;
+        List<String> urls = new ArrayList<String>();
 
         for (String key : keys){
             urls.add(String.valueOf(amazonS3.getUrl(bucket_name, key)));
         }
+        urls.remove(0);
         return urls;
     }
-
-
-
 }

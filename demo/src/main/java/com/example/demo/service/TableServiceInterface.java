@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.DTO.NotificationCarNumberDTO;
 import com.example.demo.DTO.carNumber;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,4 +22,12 @@ public interface TableServiceInterface {
     List<Long> getMonthData();
     public void updatePhoneNumber(String carNumber, String phoneNumber);
     public void updateEnteringTime(String carNumber, java.sql.Timestamp timestamp);
+
+    @Transactional
+    void resetNewCarExitTime(String carNumber);
+
+    @Transactional
+    void updateCurrentCarExitTime(String carNumber, java.sql.Timestamp timestamp);
+
+    Boolean isOverTIme(String carNumber);
 }

@@ -23,13 +23,33 @@ public class Notification_Thread extends Thread {
         MessageDTO sendMsg = new MessageDTO();
 //        System.out.println(this.seq + " thread start.");  // 쓰레드 시작
         while (true) {
-//            if () 스레드가 돌아가면서도 차량번호에 전화번호가 매칭돼있는지 체크해야함.
             try {
                 Thread.sleep(1000);  // 1초 대기한다.
             } catch (Exception e) {
             }
             sec += 1;
-            if (sec == 60){
+            if (tableServiceInterface.isOverTIme(carNumber)){
+                String phone = tableServiceInterface.isExistPhoneNumber(carNumber);
+                if (phone != null){
+                    sendMsg.setContent("법적 충전 허용시간이 초과하였습니다. 즉시 출차바랍니다.");
+                    sendMsg.setTo(phone);
+                    try {
+                        smsService.sendSms(sendMsg);
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    } catch (URISyntaxException e) {
+                        throw new RuntimeException(e);
+                    } catch (InvalidKeyException e) {
+                        throw new RuntimeException(e);
+                    } catch (NoSuchAlgorithmException e) {
+                        throw new RuntimeException(e);
+                    } catch (UnsupportedEncodingException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
+                }
+            }
+            if (sec == 30){
                 String phoneN = tableServiceInterface.isExistPhoneNumber(carNumber);
                 if (phoneN != null){
                     sendMsg.setContent("주차시간 30분 소요되었습니다.");
@@ -49,7 +69,7 @@ public class Notification_Thread extends Thread {
                     }
                 }
 
-            } else if (sec == 90) {
+            } else if (sec == 40) {
                 String phoneN = tableServiceInterface.isExistPhoneNumber(carNumber);
                 if (phoneN != null){
                     sendMsg.setContent("주차시간 60분 소요되었습니다.");
@@ -69,7 +89,7 @@ public class Notification_Thread extends Thread {
                     }
                 }
                 // 1시간 알림
-            } else if (sec == 120) {
+            } else if (sec == 55) {
                 String phoneN = tableServiceInterface.isExistPhoneNumber(carNumber);
                 if (phoneN != null){
                     sendMsg.setContent("허용 주차시간이 종료되었습니다. 출차해주시기 바랍니다.");

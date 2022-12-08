@@ -26,6 +26,8 @@ public class NotificationCarNumberDTO {
     @Column(name = "entering_time")
     private Timestamp timestamp;
 
+    @Column(name = "exit_time")
+    private Timestamp exitTime;
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
