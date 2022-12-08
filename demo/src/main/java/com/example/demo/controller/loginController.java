@@ -103,7 +103,7 @@ public class loginController {
         // 로그인 검증
     }
 
-    @GetMapping("mainPage/Carlog")
+    @GetMapping("mainPage/carlog")
     public String getCarlogPage(HttpServletRequest request, Model model) {
 
         HttpSession session = request.getSession(false);

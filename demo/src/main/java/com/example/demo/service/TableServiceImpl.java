@@ -118,6 +118,10 @@ public class TableServiceImpl implements TableServiceInterface {
         Timestamp enterTime = carForUpdate.getTimestamp();
         Timestamp exitTime = carForUpdate.getExitTime();
 
+        if (exitTime == null) {
+            return false;
+        }
+
         Calendar enTime = Calendar.getInstance();
         Calendar exTime = Calendar.getInstance();
 
@@ -130,8 +134,6 @@ public class TableServiceImpl implements TableServiceInterface {
             return true;
         }
         else return false;
-
-
     }
 
 }
