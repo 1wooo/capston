@@ -18,10 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -146,11 +143,20 @@ public class loginController {
         car.setFine((int) map.get("fine"));
         // 날짜처리코드
         String timeStr = (String) map.get("EnterDate");
+        System.out.println("EnterDate: "+timeStr);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = formatter.parse(timeStr);
+        System.out.println("date: "+date);
         java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
+        System.out.println("timestamp: "+timestamp);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp.getTime());
+        cal.add(Calendar.HOUR, 12);
+        java.sql.Timestamp newTime = new java.sql.Timestamp(cal.getTime().getTime());
+        System.out.println("New timestamp: "+ newTime);
         // 날짜처리코드드
-        car.setTimestamp(timestamp);
+        car.setTimestamp(newTime);
 
 //        System.out.println(map);
         tableServiceInterface.illegalCarRegister(car);
@@ -162,8 +168,13 @@ public class loginController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = formatter.parse(timeStr);
         java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp.getTime());
+        cal.add(Calendar.HOUR, 12);
+        java.sql.Timestamp newTime = new java.sql.Timestamp(cal.getTime().getTime());
+        System.out.println("New timestamp: "+ newTime);
 
-        tableServiceInterface.updateCurrentCarExitTime((String) map.get("carNumber"), timestamp);
+        tableServiceInterface.updateCurrentCarExitTime((String) map.get("carNumber"), newTime);
     }
 
     @PostMapping("notification/notificationRegister")
@@ -177,11 +188,20 @@ public class loginController {
 
         // 날짜처리코드
         String timeStr = (String) map.get("EnterDate");
+        System.out.println("EnterDate: "+timeStr);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = formatter.parse(timeStr);
+        System.out.println("date: "+date);
         java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
+        System.out.println("timestamp: "+timestamp);
         // 날짜처리코드
-        notificationCarNumberDTO.setTimestamp(timestamp);
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp.getTime());
+        cal.add(Calendar.HOUR, 12);
+        java.sql.Timestamp newTime = new java.sql.Timestamp(cal.getTime().getTime());
+        System.out.println("New timestamp: "+ newTime);
+
+        notificationCarNumberDTO.setTimestamp(newTime);
 
         if (!tableServiceInterface.isExist((String) map.get("carNumber")).isPresent()) {
             // 알림 서비스 등록 안된 차량이면 일단 db에 전화번호 없이 등록
