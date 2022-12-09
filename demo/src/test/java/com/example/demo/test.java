@@ -2,6 +2,7 @@
 //
 //import com.example.demo.DTO.carNumber;
 //import com.example.demo.s3.S3Service;
+//import com.example.demo.service.Notification_Thread;
 //import com.example.demo.service.SmsService;
 //import com.example.demo.service.TableServiceInterface;
 //import org.junit.jupiter.api.Test;
@@ -25,9 +26,11 @@
 //    @Test
 //    public void test() {
 //
-//        Boolean overTIme = tableServiceInterface.isOverTIme("12다1111");
+//        Notification_Thread th1 = new Notification_Thread(this.smsService, this.tableServiceInterface, "65나3482");
+//        th1.start();
 //
-//
+//        while (th1.isAlive()) {
+//        }
 //    }
 //
 //

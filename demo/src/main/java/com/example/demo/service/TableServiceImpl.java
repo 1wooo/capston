@@ -129,8 +129,9 @@ public class TableServiceImpl implements TableServiceInterface {
         exTime.setTime(exitTime);
 
         int diffMIN = exTime.get(Calendar.MINUTE) - enTime.get(Calendar.MINUTE);
+        int diffHOUR = exTime.get(Calendar.HOUR) - enTime.get(Calendar.HOUR);
 
-        if (diffMIN >= 1) {
+        if (diffMIN >= 1 || diffHOUR >= 1) {
             return true;
         }
         else return false;

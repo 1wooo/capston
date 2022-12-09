@@ -34,11 +34,12 @@ public class Notification_Thread extends Thread {
                 com.example.demo.DTO.carNumber illegarCarNumberDTO = new carNumber();
                 illegarCarNumberDTO.setCarN(carNumber);
                 illegarCarNumberDTO.setFine(100000);
+                illegarCarNumberDTO.setIllegalCode(1);
                 illegarCarNumberDTO.setTimestamp(tableServiceInterface.getEnteringCarTimestamp(carNumber));
                 tableServiceInterface.illegalCarRegister(illegarCarNumberDTO);
 
                 if (phone != null){
-                    sendMsg.setContent("법적 충전 허용시간이 초과하였습니다. 즉시 출차바랍니다.");
+                    sendMsg.setContent("법적 허용 충전시간 초과");
                     sendMsg.setTo(phone);
                     try {
                         smsService.sendSms(sendMsg);

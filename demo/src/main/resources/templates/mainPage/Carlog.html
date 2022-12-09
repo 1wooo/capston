@@ -46,10 +46,6 @@
                     </a>
 
                     <div class="sb-sidenav-menu-heading">Menu</div>
-                    <a class="nav-link" href="http://13.124.56.107:8080/mainPage/liveCam">
-                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                        Live Cam
-                    </a>
 
                     <a class="nav-link" href="http://13.124.56.107:8080/mainPage/tables">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -83,11 +79,11 @@
                             </thead>
                             <tbody>
                             <tr th:each="p : ${urls}">
-                                <td scope="row" width="10%">
+                                <td scope="row" width="5%">
                                     <input type="checkbox" name="reportChkRow">
                                 </td>
-                                <td scope="row" width="20%">
-                                    <a th:href="${p}"></a>
+                                <td scope="row" width="40%">
+                                    <a th:href="${p}" th:text="${p}"></a>
                                 </td>
 
                             </tr>

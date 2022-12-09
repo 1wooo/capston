@@ -158,7 +158,7 @@ public class loginController {
 
     @PostMapping("notification/exittimeupdate")
     public void carUpdateExitTime(@RequestBody HashMap<String, Object> map) throws ParseException {
-        String timeStr = (String) map.get("Exitdate");
+        String timeStr = (String) map.get("ExitDate");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = formatter.parse(timeStr);
         java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
