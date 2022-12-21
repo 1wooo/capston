@@ -7,4 +7,22 @@
 demo - 서버 폴더
 
 
+Skill
+<ul>
+  <li>Spring boot</li>
+  <li>Gradle</li>
+  <li>Thymleaf</li>
+  <li>JPA Hibernate</li>
+  <li>MySQL</li>
+<ul>
+Tool
+<ul>
+  <li>IntelliJ</li>
+  <li>Git</li>
+  <li>AWS EC2</li>
+  <li>AWS S3</li>
+  <li>AWS RDS</li>
+<ul>  
+
+
 crawling - 학습데이터 엔카 크롤링 (셀레니움)
