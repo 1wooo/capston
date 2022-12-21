@@ -14,7 +14,7 @@ Skill
   <li>Thymleaf</li>
   <li>JPA Hibernate</li>
   <li>MySQL</li>
-<ul>
+</ul>
   
   
 Tool
@@ -24,7 +24,7 @@ Tool
   <li>AWS EC2</li>
   <li>AWS S3</li>
   <li>AWS RDS</li>
-<ul>  
+</ul>  
 
 
 crawling - 학습데이터 엔카 크롤링 (셀레니움)
