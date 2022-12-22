@@ -11,7 +11,7 @@ Skill
 <ul>
   <li>Spring boot</li>
   <li>Gradle</li>
-  <li>Thymleaf</li>
+  <li>Thymeleaf</li>
   <li>JPA Hibernate</li>
   <li>MySQL</li>
 </ul>
