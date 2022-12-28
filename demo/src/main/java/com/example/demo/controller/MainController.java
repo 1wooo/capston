@@ -23,7 +23,7 @@ import java.util.*;
 @Slf4j
 @Controller
 @AllArgsConstructor
-public class loginController {
+public class MainController {
     @Autowired
     private MemberServiceInterface memberServiceInterface;
     @Autowired
@@ -113,28 +113,21 @@ public class loginController {
             return "mainPage/Carlog";
         }
     }
+//
+//    @GetMapping("mainPage/liveCam")
+//    public String getLiveCamPage(HttpServletRequest request, Model model) {
+//
+//        //로그인 검증
+//        HttpSession session = request.getSession(false);
+//        if (session == null) {
+//            return "loginPage/HomeLogin";
+//        } else {
+//            return "mainPage/liveCam";
+//        }
+//        // 로그인 검증
+//    } // 라이브캠 기능은 구현하지 않기로 함.
 
-    @GetMapping("mainPage/liveCam")
-    public String getLiveCamPage(HttpServletRequest request, Model model) {
-
-        //로그인 검증
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            return "loginPage/HomeLogin";
-        } else {
-            return "mainPage/liveCam";
-        }
-        // 로그인 검증
-        // 클라이언트에서 영상 넘겨받고 웹에 실시간으로 뿌려주는 코드 작성 필요
-    }
-
-//    @PostMapping("liveCamIndex/receive")
-//    public void indexReceive(@RequestBody HashMap<String, Object> map) {
-//        s3Service.setFileIndex(Integer.parseInt((String) map.get("camIndex")));
-//    }
-
-    // Rest API로 파이썬에서 받아오는 정보들 DB등록
-    @PostMapping("loginPage/testApi")
+    @PostMapping("loginPage/testApi") // 모델에서 넘어오는 위반차량정보 receive
     public void ApiTest(@RequestBody HashMap<String, Object> map) throws ParseException {
 
         carNumber car = new carNumber();
@@ -143,19 +136,17 @@ public class loginController {
         car.setFine((int) map.get("fine"));
         // 날짜처리코드
         String timeStr = (String) map.get("EnterDate");
-        System.out.println("EnterDate: "+timeStr);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = formatter.parse(timeStr);
-        System.out.println("date: "+date);
         java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
-        System.out.println("timestamp: "+timestamp);
+        // 날짜처리코드
 
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(timestamp.getTime());
         cal.add(Calendar.HOUR, 12);
         java.sql.Timestamp newTime = new java.sql.Timestamp(cal.getTime().getTime());
         System.out.println("New timestamp: "+ newTime);
-        // 날짜처리코드드
+
         car.setTimestamp(newTime);
 
 //        System.out.println(map);
@@ -164,15 +155,16 @@ public class loginController {
 
     @PostMapping("notification/exittimeupdate")
     public void carUpdateExitTime(@RequestBody HashMap<String, Object> map) throws ParseException {
+        //차량 출차 시 출차 시간 업데이트.
         String timeStr = (String) map.get("ExitDate");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = formatter.parse(timeStr);
         java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
+
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(timestamp.getTime());
         cal.add(Calendar.HOUR, 12);
         java.sql.Timestamp newTime = new java.sql.Timestamp(cal.getTime().getTime());
-        System.out.println("New timestamp: "+ newTime);
 
         tableServiceInterface.updateCurrentCarExitTime((String) map.get("carNumber"), newTime);
     }
@@ -181,38 +173,35 @@ public class loginController {
     public void NotificationCarRegister(@RequestBody HashMap<String, Object> map) throws ParseException {
         NotificationCarNumberDTO notificationCarNumberDTO = new NotificationCarNumberDTO();
         notificationCarNumberDTO.setCarN((String) map.get("carNumber"));
-        //시간 계산용 스레드
+        //알림서비스 스레드 동작
         Notification_Thread notification_thread = new Notification_Thread(smsService, tableServiceInterface, (String) map.get("carNumber"));
         notification_thread.start();
-        //시간 계산용 스레드
+        //알림서비스 스레드 동작
 
         // 날짜처리코드
         String timeStr = (String) map.get("EnterDate");
-        System.out.println("EnterDate: "+timeStr);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = formatter.parse(timeStr);
-        System.out.println("date: "+date);
         java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
-        System.out.println("timestamp: "+timestamp);
         // 날짜처리코드
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(timestamp.getTime());
         cal.add(Calendar.HOUR, 12);
         java.sql.Timestamp newTime = new java.sql.Timestamp(cal.getTime().getTime());
-        System.out.println("New timestamp: "+ newTime);
 
         notificationCarNumberDTO.setTimestamp(newTime);
 
         if (!tableServiceInterface.isExist((String) map.get("carNumber")).isPresent()) {
-            // 알림 서비스 등록 안된 차량이면 일단 db에 전화번호 없이 등록
+            // 알림 서비스 등록 안된 차량이면 일단 db에 전화번호 없이 신규등록
             tableServiceInterface.NotificationCarRegister(notificationCarNumberDTO);
         } else {
+            // 알림 서비스 등록 경력 있는 차량이면 (or db에 이미 존재하는 차량번호) 입차시간 업데이트 해주고 출차시간 리셋
             tableServiceInterface.updateEnteringTime((String)map.get("carNumber"), timestamp);
             tableServiceInterface.resetNewCarExitTime((String)map.get("carNumber"));
         }
     }
 
-    @PostMapping("mainPage/tables/carRemove")
+    @PostMapping("mainPage/tables/carRemove") // web에서 관리자가 삭제 버튼 누를 시 db 업데이트
     public String illegalCarNumberRemove(@RequestParam List<String> illegalCarNumberTableID) {
 
         for (int i = 0; i < illegalCarNumberTableID.size(); i++) {
@@ -222,6 +211,7 @@ public class loginController {
         return "redirect:/mainPage/tables";
     }
 
+    // 알림서비스 //
     @GetMapping("notification/notificationService")
     public String getNotificationServiceWeb(@SessionAttribute(name = NotificationSessionConst.NOTIFY_CAR, required = false)
                                                 NotificationCarNumberDTO notificationCarNumberDTO) {
@@ -271,13 +261,6 @@ public class loginController {
 
         return "notification/current";
     }
-
-    @GetMapping("/webcamTest")
-    public String download() throws IOException {
-
-        return "mainPage/webcamTest";
-    }
-
-
+    // 알림서비스 //
 }
 
